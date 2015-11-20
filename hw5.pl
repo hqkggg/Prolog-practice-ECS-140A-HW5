@@ -47,9 +47,13 @@ allprereq([H|T], Output):-
 allprereq(Course, Output) :- allprereq([Course], Output).
 
 
-%% Predicate all length takes a list and counts the number of atoms that occur in the list at
+%% Predicate all length takes a list and counts the number of atomic elements that occur in the list at
 %% all levels.
 all_length([], 0) :- !.
+all_length([[]|T], Count) :-  % remember that empty list is atomic, but we don't cover it in first predicate
+	all_length(T, TCount),
+	Count is 1 + TCount,
+	!.
 all_length([H|T], Count) :-
 	all_length(H, HCount),
 	all_length(T, TCount),
