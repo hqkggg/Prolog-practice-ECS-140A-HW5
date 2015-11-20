@@ -45,3 +45,15 @@ allprereq([H|T], Output):-
 	allprereq(T, TPrereqs),
 	append(TPrereqs, HPrereqs, Output), !.
 allprereq(Course, Output) :- allprereq([Course], Output).
+
+
+%% Predicate all length takes a list and counts the number of atoms that occur in the list at
+%% all levels.
+all_length([], 0) :- !.
+all_length([H|T], Count) :-
+	all_length(H, HCount),
+	all_length(T, TCount),
+	Count is HCount + TCount,
+	!.
+all_length(_, 1). % should match only atoms
+
