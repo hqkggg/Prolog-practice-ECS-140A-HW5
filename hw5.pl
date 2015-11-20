@@ -3,10 +3,13 @@
 /*******************************************/
 
 %% Find all courses with 3 or 4 credits (fc course).
-fc_course(X) :- course(X,_,3); course(X,_,4).
+fc_course(X) :-
+	course(X,_,N),
+	N >= 3,
+	N =< 4.
 
 %% Find all courses whose immediate pre-requisite is ecs110 (prereq 110).
-prereq_100(X) :-
+prereq_110(X) :-
 	course(X,Y,_),
 	member(ecs110, Y).
 
@@ -21,15 +24,16 @@ instructor_names(IName) :-
 	instructor(IName, ICourses), 
 	any_member(SCourses, ICourses).
 
-any_member([H1|_], [H2|_]) :- H1 = H2, !.
+%% Find all elements of one List which are also members of another List
+any_member([H|_], [H|_]) :- !.
 any_member(L1, [_|T2]) :- any_member(L1, T2), !.
 any_member([_|T1], L2) :- any_member(T1, L2), !.
 
 %% Find the names of all students who are in jim’s class (students).
-students(Classmate) :-
-	student(john, SCourses),
-	student(Classmate, XCourses),
-	any_member(SCourses, XCourses).
+students(Student) :-
+	instructor(jim, JCourses),
+	student(Student, SCourses),
+	any_member(SCourses, JCourses).
 
 %% Find all pre-requisites of a course (allprereq). (This will involve finding not only the immediate
 %% prerequisites of a course, but pre-requisite courses of pre-requisites and so on.)

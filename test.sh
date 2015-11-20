@@ -11,7 +11,7 @@ rm -f $TMPOUT
 
 # run 
 echo "(2) consult your solution and query" 
-gprolog --init-goal "consult('part1.facts.pl'), consult(\"$SOLUTION\"), consult('test.pl')" --query-goal $QUERY &> /dev/null
+gprolog --init-goal "consult('part1.facts.pl'), consult('$SOLUTION'), consult('test.pl')" --query-goal $QUERY &> /dev/null
 
 # diff 
 echo "(3) check for differences" 
