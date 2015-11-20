@@ -33,9 +33,11 @@ students(Classmate) :-
 
 %% Find all pre-requisites of a course (allprereq). (This will involve finding not only the immediate
 %% prerequisites of a course, but pre-requisite courses of pre-requisites and so on.)
-allprereq(Course, Prereq) :-
-	course(Course, PrereqList, _),
-	member(Prereq, PrereqList).
-allprereq(Course, PrePrereq) :-
-	allprereq(Course, Prereq),
-	allprereq(Prereq, PrePrereq).
+allprereq([], []) :- !.
+allprereq([H|T], Output):-
+	course(H, HP, _),
+	allprereq(HP, HPP),
+	append(HPP, HP, HPrereqs),
+	allprereq(T, TPrereqs),
+	append(TPrereqs, HPrereqs, Output), !.
+allprereq(Course, Output) :- allprereq([Course], Output).
