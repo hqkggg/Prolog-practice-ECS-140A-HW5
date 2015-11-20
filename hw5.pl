@@ -57,3 +57,18 @@ all_length([H|T], Count) :-
 	!.
 all_length(_, 1). % should match only atoms
 
+%% Returns true if L contains an equal number of a and b terms
+equal_a_b(L) :-
+	atom_count(ACount, a, L),
+	atom_count(BCount, b, L),
+	ACount = BCount.
+
+%% Returns number of times a given atom appears as a member of List
+atom_count(0, Atom, []) :- !.
+atom_count(Acc, Atom, [H|T]) :-
+	atom_count(AccH, Atom, H),
+	atom_count(AccT, Atom, T),
+	Acc is AccH + AccT,
+	!.
+atom_count(1, Atom, Atom) :- !.
+atom_count(0, _, _).
