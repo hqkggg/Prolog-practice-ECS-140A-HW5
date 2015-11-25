@@ -76,3 +76,25 @@ atom_count(Acc, Atom, [H|T]) :-
 	!.
 atom_count(1, Atom, Atom) :- !.
 atom_count(0, _, _).
+
+
+%% swap_prefix_suffix(K,L,S) is true if:
+%% • K is a sub-list of L, and
+%% • S is the list obtained by appending the suffix of L following an occurrence of K in L, with K and
+%% 		with the prefix that precedes that same occurrence of K in L.
+%% E.g.
+%% ?-swap_prefix_suffix([c, d], [a, b, c, d, e], S).
+%% yes. S=[e, c, d, a, b]
+%% ?-swap_prefix_suffix([c, e], [a, b, c, d, e], S).
+%% no.
+%% ?-swap_prefix_suffix(K, [a, b, c, d, e], [b, c, d, e, a]).
+%% yes. K=[a]
+swap_prefix_suffix(K, List, Swapped) :-
+	swap_prefix_suffix(K, List, [], Swapped).
+swap_prefix_suffix(K, List, Prefix, Swapped) :-
+	append(K, Suffix, List),
+	append(K, Prefix, KAndPrefix),
+	append(Suffix, KAndPrefix, Swapped).
+swap_prefix_suffix(K, [Prefix|T], PrefixAcc, Swapped) :-
+	append(PrefixAcc, [Prefix], P),
+	swap_prefix_suffix(K, T, P, Swapped).
