@@ -77,6 +77,9 @@ atom_count(Acc, Atom, [H|T]) :-
 atom_count(1, Atom, Atom) :- !.
 atom_count(0, _, _).
 
+%% True if first argument is a list that appears at the end of the second
+%% argument.
+suffix(Suff, List) :- append(_, Suff, List).
 
 %% swap_prefix_suffix(K,L,S) is true if:
 %% • K is a sub-list of L, and
@@ -98,3 +101,12 @@ swap_prefix_suffix(K, List, Prefix, Swapped) :-
 swap_prefix_suffix(K, [Prefix|T], PrefixAcc, Swapped) :-
 	append(PrefixAcc, [Prefix], P),
 	swap_prefix_suffix(K, T, P, Swapped).
+
+%% palin(A) is true if the list A is a palindrome, that is, it reads the same backwards
+%% as forwards. For instance, [1, 2, 3, 2, 1] is a palindrome, but [1, 2] is not.
+palin(List) :- palin(List, []).
+palin([H|ListAndSuffix], ListAndSuffix).
+palin(ListAndSuffix, ListAndSuffix).
+palin([H|T], SuffAcc) :-
+	suffix([H|SuffAcc], T),
+	palin(T, [H|SuffAcc]).
