@@ -1,7 +1,3 @@
-/*******************************************/
-/**    Your solution goes in this file    **/ 
-/*******************************************/
-
 %% Find all courses with 3 or 4 credits (fc course).
 fc_course(X) :-
 	course(X,_,N),
@@ -68,7 +64,7 @@ equal_a_b(L) :-
 	ACount = BCount.
 
 %% Returns number of times a given atom appears as a member of List
-atom_count(0, Atom, []) :- !.
+atom_count(0, _, []) :- !.
 atom_count(Acc, Atom, [H|T]) :-
 	atom_count(AccH, Atom, H),
 	atom_count(AccT, Atom, T),
@@ -79,7 +75,7 @@ atom_count(0, _, _).
 
 %% True if first argument is a list that appears at the end of the second
 %% argument.
-suffix(Suff, List) :- append(_, Suff, List).
+%% suffix(Suff, List) :- append(_, Suff, List).
 
 %% swap_prefix_suffix(K,L,S) is true if:
 %% • K is a sub-list of L, and
@@ -105,8 +101,17 @@ swap_prefix_suffix(K, [Prefix|T], PrefixAcc, Swapped) :-
 %% palin(A) is true if the list A is a palindrome, that is, it reads the same backwards
 %% as forwards. For instance, [1, 2, 3, 2, 1] is a palindrome, but [1, 2] is not.
 palin(List) :- palin(List, []).
-palin([H|ListAndSuffix], ListAndSuffix).
+palin([_|ListAndSuffix], ListAndSuffix).
 palin(ListAndSuffix, ListAndSuffix).
 palin([H|T], SuffAcc) :-
 	suffix([H|SuffAcc], T),
 	palin(T, [H|SuffAcc]).
+
+%% A good sequence consists either of the single number 0, or of the number 1
+%% followed by two other good sequences: thus, [1,0,1,0,0] is a good sequence,
+%% but [1,1,0,0] is not.
+good([0]).
+good([1|T]) :-
+	append(X,Y,T),
+	good(X),
+	good(Y).
