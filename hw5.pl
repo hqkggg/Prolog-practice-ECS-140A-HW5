@@ -1,19 +1,18 @@
 /*
 	Working on the farmer, wolf, goat, cabbage ferrying across a river puzzle
-*/
-
-/*
 	Solve should check if move from state(l,l,l,l) to state(r,r,r,r) with history [] works
+
+	Run
+		gprolog --init-goal "['part1.facts.pl','hw5.pl']" --query-goal 'solve'
 */
 
-%% 
+%% Indicate whether two banks of a river are opposite
 opposite(left, right).
 opposite(right, left).
 
-%% Initial state is true
-state(left, left, left, left).
-%% Any state which can be reached from another state is true
-state(F, W, G, C) :- move(state(F0, W0, G0, C0), state(F, W, G, C), []).
+%% A state is an indication of which riverbank (left or right) holds the four entities:
+%% farmer, wolf, goat, cabbage
+state(_, _, _, _).
 
 print_history([]).
 print_history([arc(take(Obj, B0, B1), _, State1)|T]) :-
